@@ -1,5 +1,5 @@
 <template>
-<div id="app" class="container">
+<div id="app">
 <div class="header">
 <div class="apptitle" style="padding-top:10px">
 <h2>Gallery</h2>
@@ -15,6 +15,8 @@
 </div>
 </div>
 <div class="resulthub">
+
+<div v-if="defaultView">
   <swiper class="swiper" :options="swiperOption">
   <swiper-slide v-for="(photo,index) in resultpics" :key="index">
   <div class="card piccard">
@@ -34,11 +36,16 @@
   <div class="swiper-button-next" slot="button-next"></div>
   </swiper>
   </div>
+<div v-if=!defaultView>
+<slidePan :slideDataCollection="resultpics"></slidePan>
+</div>
+  </div>
   </div>
 </template>
  
 <script>
  import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
+ import slidePan from './components/slider.vue'
  import 'swiper/css/swiper.css'
  import jsPDF from 'jspdf'
 
@@ -48,6 +55,7 @@
       return {
         query:"",
         resultpics:[],
+        defaultView:false,
         swiperOption: {
           slidesPerView: 3,
           spaceBetween: 50,
@@ -88,7 +96,8 @@
     },
      components: {
       Swiper,
-      SwiperSlide
+      SwiperSlide,
+      slidePan
     },
     computed: {
       swiper() {
